@@ -2,7 +2,7 @@ import IVehicles from './IVehicles';
 
 interface ICar extends IVehicles {
   doorsQty: number,
-  seats: number
+  seatsQty: number
 }
 
 export default ICar;
