@@ -3,34 +3,47 @@ import ICar from '../Interfaces/ICar';
 import CarService from '../Services/CarService';
 
 class CarController {
-  private req: Request;
-  private res: Response;
-  private next: NextFunction;
-  private service;
+  private service: CarService;
 
-  constructor(req: Request, res: Response, next: NextFunction) {
-    this.req = req;
-    this.res = res;
-    this.next = next;
-    this.service = new CarService();
+  constructor(service: CarService) {
+    this.service = service;
   }
-
-  public async create() {
+  
+  public async create(req: Request, res: Response, next: NextFunction) {
     const car: ICar = {
-      doorsQty: this.req.body.doorsQty,
-      seatsQty: this.req.body.seatsQty,
-      model: this.req.body.model,
-      year: this.req.body.year,
-      color: this.req.body.color,
-      status: this.req.body.status || false,
-      buyValue: this.req.body.buyValue,
+      doorsQty: req.body.doorsQty,
+      seatsQty: req.body.seatsQty,
+      model: req.body.model,
+      year: req.body.year,
+      color: req.body.color,
+      status: req.body.status || false,
+      buyValue: req.body.buyValue,
     };
 
     try {
       const newCar = await this.service.createCar(car);
-      return this.res.status(201).json(newCar);
+      return res.status(201).json(newCar);
     } catch (error) {
-      this.next(error);
+      next(error);
+    }
+  }
+
+  public async findAll(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const arrayCars = await this.service.listCars();
+      return res.status(200).json(arrayCars);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async findById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    try {
+      const car = await this.service.listCar(id);
+      return res.status(200).json(car);
+    } catch (error) {
+      next(error);
     }
   }
 }
