@@ -1,4 +1,5 @@
-import { HydratedDocument, model, Model, models, Schema } from 'mongoose';
+import { HydratedDocument, isValidObjectId, model, Model, models, Schema } from 'mongoose';
+import InvalidMongoIdError from '../Errors/InvalidMongoIdError';
 
 abstract class AbstractODM<T> {
   protected model: Model<T>;
@@ -14,6 +15,20 @@ abstract class AbstractODM<T> {
   public create(obj: T): Promise<HydratedDocument<T>> {
     return this.model.create({ ...obj });
   }
+
+  public findAll() {
+    return this.model.find();
+  }
+
+  public findById(id: string) {
+    if (!isValidObjectId(id)) throw new InvalidMongoIdError('Invalid mongo id');
+    return this.model.findById(id);
+  }
+
+  // public async update(id: string, obj: T): Promise<> {
+  //   if (!isValidObjectId(id)) throw new InvalidMongoIdError('Invalid mongo id');
+  //   return this.model.updateOne({ _id: id }, { ...obj }, { new: true });
+  // }
 }
 
 export default AbstractODM;
