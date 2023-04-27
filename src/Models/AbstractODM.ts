@@ -1,13 +1,13 @@
 import {
-  HydratedDocument,
   isValidObjectId,
   model,
   Model,
-  models,
-  Schema,
+  models, Schema,
   UpdateQuery,
 } from 'mongoose';
 import InvalidMongoIdError from '../Errors/InvalidMongoIdError';
+
+const errorMessage = 'Invalid mongo id';
 
 abstract class AbstractODM<T> {
   protected model: Model<T>;
@@ -20,24 +20,29 @@ abstract class AbstractODM<T> {
     this.model = models[this.modelName] || model(modelName, this.schema);
   }
 
-  public create(obj: T): Promise<HydratedDocument<T>> {
-    return this.model.create({ ...obj });
+  public async createObj(obj: T): Promise<T> {
+    const created = await this.model.create({ ...obj });
+    console.log(created);
+    return created;
   }
-  // ! Tipar depois
-  public findAll() {
-    return this.model.find();
+
+  public async findAll(): Promise<T[]> {
+    return this.model.find({});
   }
-  // ! Tipar depois
-  public findById(id: string) {
-    if (!isValidObjectId(id)) throw new InvalidMongoIdError('Invalid mongo id');
+
+  public async findById(id: string): Promise<T | null> {
+    if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
     return this.model.findById(id);
   }
 
-  // ! Pedir ajuda para realizar update e tipagem
-
-  public async update(id: string, obj: T) {
-    if (!isValidObjectId(id)) throw new InvalidMongoIdError('Invalid mongo id');
+  public async updateObj(id: string, obj: T): Promise<T | null> {
+    if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
     return this.model.findOneAndUpdate({ _id: id }, { ...obj } as UpdateQuery<T>, { new: true });
+  }
+   
+  public async deleteById(id: string): Promise<T | null> {
+    if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
+    return this.model.findByIdAndDelete({ _id: id });
   }
 }
 

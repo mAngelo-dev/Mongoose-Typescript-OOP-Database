@@ -1,4 +1,4 @@
-import IVehicles from './IVehicles';
+import IVehicles from './IVehicle';
 
 interface IMotorcycle extends IVehicles {
   category: 'Street' | 'Custom' | 'Trail',

@@ -1,39 +1,40 @@
 import { NextFunction, Request, Response } from 'express';
-import ICar from '../Interfaces/ICar';
-import CarService from '../Services/CarService';
+import IMotorcycle from '../Interfaces/IMotorcycle';
+import MotorcycleService from '../Services/MotorcycleService';
 
-function carGen(req: Request): ICar {
+function motorcycleGen(req: Request): IMotorcycle {
   return {
-    doorsQty: req.body.doorsQty,
-    seatsQty: req.body.seatsQty,
     model: req.body.model,
     year: req.body.year,
     color: req.body.color,
-    status: req.body.status || false,
+    status: req.body.status,
     buyValue: req.body.buyValue,
+    category: req.body.category,
+    engineCapacity: req.body.engineCapacity,
   };
 }
 
-class CarController {
-  private service: CarService;
-  constructor(service: CarService) {
+class MotorcycleController {
+  private service: MotorcycleService;
+  constructor(service: MotorcycleService) {
     this.service = service;
   }
-  public async createObj(req: Request, res: Response, next: NextFunction): 
-  Promise<Response | void> {
+  public async createObj(req: Request, res: Response, next: NextFunction)
+    : Promise<Response | void> {
     try {
-      const newCar = await this.service.createObj(carGen(req));
-      return res.status(201).json(newCar);
+      const newMotorcycle = await this.service.createObj(motorcycleGen(req));
+      return res.status(201).json(newMotorcycle);
     } catch (error) {
       next(error);
     }
   }
 
-  public async updateObj(req: Request, res: Response, next: NextFunction) {
+  public async updateObj(req: Request, res: Response, next: NextFunction):
+  Promise<Response | void> {
     const { id } = req.params;
     try {
-      const updateService = await this.service.updateObj(id, carGen(req));
-      return res.status(200).json(updateService);
+      const updateMotorcycle = await this.service.updateObj(id, motorcycleGen(req));
+      return res.status(200).json(updateMotorcycle);
     } catch (error) {
       next(error);
     }
@@ -48,7 +49,7 @@ class CarController {
       next(error);
     }
   }
-
+  
   public async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       const findAllService = await this.service.findAll();
@@ -69,4 +70,4 @@ class CarController {
   }
 }
 
-export default CarController;
+export default MotorcycleController;
