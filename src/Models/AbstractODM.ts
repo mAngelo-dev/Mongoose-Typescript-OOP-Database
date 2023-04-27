@@ -1,4 +1,12 @@
-import { HydratedDocument, isValidObjectId, model, Model, models, Schema, UpdateQuery } from 'mongoose';
+import {
+  HydratedDocument,
+  isValidObjectId,
+  model,
+  Model,
+  models,
+  Schema,
+  UpdateQuery,
+} from 'mongoose';
 import InvalidMongoIdError from '../Errors/InvalidMongoIdError';
 
 abstract class AbstractODM<T> {
