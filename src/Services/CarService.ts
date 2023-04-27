@@ -28,12 +28,12 @@ class CarService {
     return carObject;
   }
 
-  // public async updateCar(id: string, car: ICar): Promise<Car> {
-  //   const updatedCar = await this.carODM.update(id, car);
-  //   if (!updatedCar) throw new NotFoundError('Car not found');
-  //   const carObject = new Car(updatedCar as ICar);
-  //   return carObject;
-  // }
+  public async updateCar(id: string, car: ICar): Promise<Car> {
+    const updatedCar = await this.carODM.update(id, car);
+    if (!updatedCar) throw new NotFoundError('Car not found');
+    const carObject = new Car(updatedCar);
+    return carObject;
+  }
 }
 
 export default CarService;
