@@ -6,6 +6,7 @@ import {
   UpdateQuery,
 } from 'mongoose';
 import InvalidMongoIdError from '../Errors/InvalidMongoIdError';
+import NotFoundError from '../Errors/NotFoundError';
 
 const errorMessage = 'Invalid mongo id';
 
@@ -22,7 +23,6 @@ abstract class AbstractODM<T> {
 
   public async createObj(obj: T): Promise<T> {
     const created = await this.model.create({ ...obj });
-    console.log(created);
     return created;
   }
 
@@ -30,19 +30,29 @@ abstract class AbstractODM<T> {
     return this.model.find({});
   }
 
-  public async findById(id: string): Promise<T | null> {
+  public async findById(id: string): Promise<T> {
     if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
-    return this.model.findById(id);
+    const query = await this.model.findById(id);
+    if (!query) throw new NotFoundError(`${this.modelName} not found`);
+    return query;
   }
 
-  public async updateObj(id: string, obj: T): Promise<T | null> {
+  public async updateObj(id: string, obj: T): Promise<T> {
     if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
-    return this.model.findOneAndUpdate({ _id: id }, { ...obj } as UpdateQuery<T>, { new: true });
+    const query = await this.model.findOneAndUpdate(
+      { _id: id },
+      { ...obj } as UpdateQuery<T>,
+      { new: true },
+    );
+    if (!query) throw new NotFoundError(`${this.modelName} not found`);
+    return query;
   }
    
-  public async deleteById(id: string): Promise<T | null> {
+  public async deleteById(id: string): Promise<T> {
     if (!isValidObjectId(id)) throw new InvalidMongoIdError(errorMessage);
-    return this.model.findByIdAndDelete({ _id: id });
+    const query = await this.model.findByIdAndDelete({ _id: id });
+    if (!query) throw new NotFoundError(`${this.modelName} not found`);
+    return query;
   }
 }
 
