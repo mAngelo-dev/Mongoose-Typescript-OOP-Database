@@ -5,10 +5,10 @@ class ErrorHandler {
     error,
     _req,
     res,
-    next,
+    _next,
   ) => {
-    res.status(error.code).json({ message: error.message });
-    next();
+    if (error.name === 'ValidationError') return res.status(422).json({ message: error.message });
+    res.status(error.code || 500).json({ message: error.message });
   };
 }
 
