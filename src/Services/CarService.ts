@@ -2,8 +2,6 @@ import Car from '../Domains/Car';
 import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
 
-const NotFoundMessage = 'Car not found';
-
 class CarService {
   private carODM: CarODM;
   constructor() {

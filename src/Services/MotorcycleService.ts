@@ -2,8 +2,6 @@ import Motorcycle from '../Domains/Motorcycle';
 import IMotorcycle from '../Interfaces/IMotorcycle';
 import MotorcycleODM from '../Models/MotorcycleODM';
 
-const NotFoundMessage = 'Motorcycle not found';
-
 class MotorcycleService {
   private motorcycleODM: MotorcycleODM;
   constructor() {
