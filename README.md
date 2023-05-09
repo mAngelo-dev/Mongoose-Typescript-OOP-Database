@@ -8,3 +8,21 @@ Also, this is a Node.js API. The Project includes some essencial scripts that yo
 
 
 
+
+## Funcionalidades
+
+- Routes for car and motorcycles
+- Created using OOP 
+- Mongoose ODM + MongoDB
+- Abstract classes that can be used to easily expand the project
+
+
+## Starting the application
+
+1st step: Clone the repo and in the directory, install the dependencies with `npm i`
+
+2nd step: Run `docker compose up or docker compose up -d`
+
+3th step: With thunder client or insomnia (or another API Client of your choice) you can now test the API and the database.
+
+
