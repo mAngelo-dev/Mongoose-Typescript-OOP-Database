@@ -26,3 +26,18 @@ Also, this is a Node.js API. The Project includes some essencial scripts that yo
 3th step: With thunder client or insomnia (or another API Client of your choice) you can now test the API and the database.
 
 
+
+## Running the tests
+
+To run the integration and unitary tests, run:
+
+```bash
+  npm run test:mocha
+```
+or
+
+```bash
+  npm run test:coverage
+```
+
+Running `npm run test` will use @Trybe premade tests to assure that the project is OK.
