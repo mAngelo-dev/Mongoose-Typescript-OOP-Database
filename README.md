@@ -40,4 +40,4 @@ or
   npm run test:coverage
 ```
 
-Running `npm run test` will use @Trybe premade tests to assure that the project is OK.
+Running `npm run test` will use [@Trybe](https://github.com/betrybe]) premade tests to assure that the project is OK.
